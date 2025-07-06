@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>
+    <%= title %>
+  </title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+    }
+
+    .course-card {
+      border: 1px solid #ccc;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+    }
+
+    .course-card h3 {
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>All Available Courses</h1>
+  <a href="/dashboard">Back to Dashboard</a>
+  <hr>
+  <% if (courses.length> 0) { %>
+    <% courses.forEach(course=> { %>
+      <div class="course-card">
+        <h3>
+          <%= course.title %>
+        </h3>
+        <p>
+          <%= course.description %>
+        </p>
+        <p><strong>Instructor:</strong>
+          <%= course.instructorName %>
+        </p>
+      </div>
+      <% }); %>
+        <% } else { %>
+          <p>No courses are available at the moment.</p>
+          <% } %>
+</body>
+</html>

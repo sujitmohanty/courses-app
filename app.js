@@ -4,11 +4,15 @@ const session = require("express-session");
 const SQLiteStore = require("connect-sqlite3")(session);
 require("dotenv").config();
 
+// Import Models
+const User = require("./models/user");
+
 // Import routes
 const authRoutes = require("./routes/authRoutes");
+const courseRoutes = require("./routes/courseRoutes");
 
-// Import database configuration
-const db = require("./config/database");
+// Import middleware
+const { isAuthenticated } = require("./middlewares/authMiddleware");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -23,7 +27,7 @@ app.use(express.json());
 app.use(
   session({
     store: new SQLiteStore({ db: "sessions.sqlite", dir: "./config" }),
-    secret: process.env.SESSION_SECRET || "ABC12345",
+    secret: process.env.SESSION_SECRET || "ABC12323435",
     resave: false,
     saveUninitialized: false,
     cookie: { maxAge: 1000 * 60 * 60 * 24 },
@@ -32,28 +36,35 @@ app.use(
 
 // Middleware to make user info available in all views
 app.use((req, res, next) => {
-  res.locals.user = req.session.userId
-    ? { id: req.session.userId, role: req.session.role }
-    : null;
-  next();
+  if (!req.session.userId) {
+    res.locals.user = null;
+    return next();
+  }
+  User.findById(req.session.userId, (err, user) => {
+    if (err) {
+      console.error("Session user lookup error:", err);
+      res.locals.user = null;
+    } else {
+      // Avoiding to expose hashed password
+      const { password, ...safeUser } = user;
+      res.locals.user = safeUser;
+    }
+    next();
+  });
 });
 
 // Use routes
 app.use("/auth", authRoutes);
+app.use("/courses", courseRoutes);
 
 // Home page route
 app.get("/", (req, res) => {
   res.render("home", { title: "Home" });
 });
 
-// Placeholder dashboard route
-app.get("/dashboard", (req, res) => {
-  if (!req.session.userId) {
-    return res.redirect("/auth/login");
-  }
-  res.send(
-    `<h1>Welcome to your Dashboard!</h1><p>Your Role: ${req.session.role}</p><a href="/auth/logout">Logout</a>`
-  );
+// Main dashboard route
+app.get("/dashboard", isAuthenticated, (req, res) => {
+  res.render("dashboard", { title: "Dashboard" });
 });
 
 app.listen(PORT, () => {
