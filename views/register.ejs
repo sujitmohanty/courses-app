@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>
+    <%= title %>
+  </title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      max-width: 300px;
+      gap: 10px;
+    }
+
+    input,
+    select {
+      padding: 8px;
+    }
+
+    button {
+      padding: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Register</h1>
+  <form action="/auth/register" method="POST">
+    <input type="text" name="name" placeholder="Full Name" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="password" name="password" placeholder="Password" required>
+    <select name="role" required>
+      <option value="" disabled selected>Select a role</option>
+      <option value="student">Student</option>
+      <option value="instructor">Instructor</option>
+    </select>
+    <button type="submit">Register</button>
+  </form>
+</body>
+</html>
