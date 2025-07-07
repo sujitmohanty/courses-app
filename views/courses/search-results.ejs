@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    <%= title %>
+  </title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .course-card {
+      border: 1px solid #ccc;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+    }
+
+    .course-card h3 {
+      margin-top: 0;
+    }
+
+    .nav-link {
+      margin-right: 15px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Search Results for "<%= searchTerm %>"</h1>
+
+  <% if (user) { %>
+    <a href="/dashboard" class="nav-link">Back to Dashboard</a>
+    <% } else { %>
+      <a href="/" class="nav-link">Back to Home</a>
+      <% } %>
+        <hr>
+
+        <% if (courses.length> 0) { %>
+          <% courses.forEach(course=> { %>
+            <div class="course-card">
+              <h3>
+                <%= course.title %>
+              </h3>
+              <p>
+                <%= course.description %>
+              </p>
+              <p><strong>Instructor:</strong>
+                <%= course.instructorName %>
+              </p>
+            </div>
+            <% }); %>
+              <% } else { %>
+                <p>No courses found matching your search term.</p>
+                <% } %>
+</body>
+</html>

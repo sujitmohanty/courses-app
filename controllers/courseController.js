@@ -127,3 +127,27 @@ exports.postDeleteCourse = (req, res) => {
     });
   });
 };
+
+// Handle course search
+exports.searchCourses = (req, res) => {
+  const { q } = req.query; // Search term from the URL, e.g., /search?q=History
+
+  if (!q) {
+    // If search is empty, just show all courses
+    return res.redirect("/courses");
+  }
+
+  Course.search(q, (err, courses) => {
+    if (err) {
+      console.error("Error during course search:", err);
+      return res.status(500).send("Error searching for courses.");
+    }
+
+    // Render the results page with the found courses
+    res.render("courses/search-results", {
+      title: `Search Results for "${q}"`,
+      courses: courses,
+      searchTerm: q,
+    });
+  });
+};

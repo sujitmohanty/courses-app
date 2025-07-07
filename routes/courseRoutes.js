@@ -65,4 +65,7 @@ router.post(
   courseController.postDeleteCourse
 );
 
+// Handle course search (accessible to guests)
+router.get("/search", courseController.searchCourses);
+
 module.exports = router;

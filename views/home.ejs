@@ -5,9 +5,113 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student Course Management - <%= title %>
   </title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      line-height: 1.6;
+      padding: 0;
+      margin: 0;
+      background-color: #f8f9fa;
+    }
+
+    header {
+      background-color: #fff;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid #dee2e6;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h2 {
+      margin: 0;
+    }
+
+    header nav a {
+      text-decoration: none;
+      color: #007bff;
+      margin-left: 20px;
+      font-weight: 500;
+    }
+
+    header nav a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .search-section {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-section h2 {
+      margin-top: 0;
+    }
+
+    .search-form {
+      display: flex;
+      gap: 10px;
+    }
+
+    .search-form input {
+      flex-grow: 1;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .search-form button {
+      padding: 12px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+    }
+  </style>
 </head>
 <body>
-  <h1>Welcome to the Course Management Application!</h1>
-  <p>Server is up and running!</p>
+  <header>
+    <h2>CourseFlow</h2>
+    <nav>
+      <% if (user) { %>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/auth/logout">Logout</a>
+        <% } else { %>
+          <a href="/auth/login">Login</a>
+          <a href="/auth/register">Register</a>
+          <% } %>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="hero">
+      <h1>Welcome to the Student Course Management System</h1>
+      <p>Find your next course and start your learning journey today.</p>
+    </div>
+
+    <section class="search-section">
+      <h2>Search Courses</h2>
+      <form action="/courses/search" method="GET" class="search-form">
+        <input type="text" name="q" placeholder="Search by course title or instructor..." required>
+        <button type="submit">Search</button>
+      </form>
+    </section>
+  </div>
+
 </body>
 </html>

@@ -58,6 +58,21 @@ const Course = {
       callback(err); // Pass final error status back
     });
   },
+
+  // Search for courses by title or instructor name
+  search: (searchTerm, callback) => {
+    const sql = `
+            SELECT courses.id, courses.title, courses.description, users.name as instructorName
+            FROM courses
+            JOIN users ON courses.instructor_id = users.id
+            WHERE courses.title LIKE ? OR users.name LIKE ?
+        `;
+    // The '%' are wildcards, so the search term can appear anywhere in the title or name
+    const searchQuery = `%${searchTerm}%`;
+    db.all(sql, [searchQuery, searchQuery], (err, rows) => {
+      callback(err, rows);
+    });
+  },
 };
 
 module.exports = Course;
