@@ -25,4 +25,44 @@ router.post(
   courseController.postCreateCourse
 );
 
+// GET /courses/my-courses - Display courses for the logged-in instructor
+router.get(
+  "/my-courses",
+  isAuthenticated,
+  isInstructor,
+  courseController.getInstructorCourses
+);
+
+// GET /courses/:id/details - Display course details and enrolled students
+router.get(
+  "/:id/details",
+  isAuthenticated,
+  isInstructor,
+  courseController.getCourseDetails
+);
+
+// GET /courses/:id/edit - Display form to edit a course
+router.get(
+  "/:id/edit",
+  isAuthenticated,
+  isInstructor,
+  courseController.getEditCourse
+);
+
+// POST /courses/:id/update - Handle updating a course
+router.post(
+  "/:id/update",
+  isAuthenticated,
+  isInstructor,
+  courseController.postUpdateCourse
+);
+
+// POST /courses/:id/delete - Handle deleting a course
+router.post(
+  "/:id/delete",
+  isAuthenticated,
+  isInstructor,
+  courseController.postDeleteCourse
+);
+
 module.exports = router;

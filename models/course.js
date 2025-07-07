@@ -34,6 +34,30 @@ const Course = {
       callback(err, row);
     });
   },
+
+  // Find all courses by a specific instructor
+  findByInstructorId: (instructorId, callback) => {
+    const sql = "SELECT * FROM courses WHERE instructor_id = ?";
+    db.all(sql, [instructorId], (err, rows) => {
+      callback(err, rows);
+    });
+  },
+
+  // Update a course's details
+  update: (id, title, description, callback) => {
+    const sql = "UPDATE courses SET title = ?, description = ? WHERE id = ?";
+    db.run(sql, [title, description, id], function (err) {
+      callback(err);
+    });
+  },
+
+  // Delete a course
+  delete: (id, callback) => {
+    const deleteCourseSql = "DELETE FROM courses WHERE id = ?";
+    db.run(deleteCourseSql, id, function (err) {
+      callback(err); // Pass final error status back
+    });
+  },
 };
 
 module.exports = Course;

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>
+    <%= title %>
+  </title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      max-width: 500px;
+      gap: 10px;
+    }
+
+    input,
+    textarea {
+      padding: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Edit Course: <%= course.title %>
+  </h1>
+  <form action="/courses/<%= course.id %>/update" method="POST">
+    <label for="title">Course Title</label>
+    <input type="text" id="title" name="title" value="<%= course.title %>" required>
+
+    <label for="description">Course Description</label>
+    <textarea id="description" name="description" rows="5" required><%= course.description %></textarea>
+
+    <button type="submit">Save Changes</button>
+  </form>
+  <a href="/courses/my-courses">Cancel</a>
+</body>
+</html>
