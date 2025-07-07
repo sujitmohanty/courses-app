@@ -32,8 +32,9 @@
 <body>
   <h1>Create a New Course</h1>
   <form action="/courses/create" method="POST">
-    <input type="text" name="title" placeholder="Course Title" required>
-    <textarea name="description" rows="5" placeholder="Course Description" required></textarea>
+    <input type="text" name="title" placeholder="Course Title" required minlength="3" maxlength="100">
+    <textarea name="description" rows="5" placeholder="Course Description" required minlength="10"
+      maxlength="1000"></textarea>
     <button type="submit">Create Course</button>
   </form>
   <a href="/dashboard">Cancel</a>
