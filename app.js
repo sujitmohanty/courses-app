@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const session = require("express-session");
+const morgan = require("morgan");
 const SQLiteStore = require("connect-sqlite3")(session);
 require("dotenv").config();
 
@@ -19,6 +20,10 @@ const PORT = process.env.PORT || 3000;
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+
+// Morgan middleware for logging
+// 'dev' format provides concise, color-coded output for development
+app.use(morgan("dev"));
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
@@ -70,3 +75,28 @@ app.get("/dashboard", isAuthenticated, (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
+
+// Graceful shutdown logic
+const gracefulShutdown = (signal) => {
+  console.log(`\n${signal} received. Shutting down gracefully...`);
+
+  // Stop accepting new connections
+  server.close(() => {
+    console.log("HTTP server closed.");
+
+    // Close the database connection
+    db.close((err) => {
+      if (err) {
+        console.error("Error closing the database:", err.message);
+      } else {
+        console.log("Database connection closed.");
+      }
+      // Exit the process
+      process.exit(0);
+    });
+  });
+};
+
+// Listen for termination signals
+process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
+process.on("SIGINT", () => gracefulShutdown("SIGINT")); // Catches Ctrl+C

@@ -1,5 +1,6 @@
 // controllers/authController.js
 const User = require("../models/user");
+const db = require("../config/database");
 
 // Display registration page
 exports.getRegister = (req, res) => {
@@ -69,5 +70,19 @@ exports.getLogout = (req, res) => {
       return res.status(500).send("Could not log out.");
     }
     res.redirect("/");
+  });
+};
+
+// Handle health check
+exports.getHealth = (req, res) => {
+  // Check database connectivity
+  db.get("SELECT 1", (err) => {
+    if (err) {
+      console.error("Health check failed:", err);
+      return res
+        .status(503)
+        .json({ status: "error", message: "Service Unavailable" });
+    }
+    res.status(200).json({ status: "ok", message: "Service is healthy" });
   });
 };

@@ -5,6 +5,9 @@ const {
   isAuthenticated,
   isInstructor,
 } = require("../middlewares/authMiddleware");
+const {
+  validateCourseCreation,
+} = require("../middlewares/validationMiddleware");
 
 // GET /courses - Display all courses (for all authenticated users)
 router.get("/", isAuthenticated, courseController.getAllCourses);
@@ -22,6 +25,7 @@ router.post(
   "/create",
   isAuthenticated,
   isInstructor,
+  validateCourseCreation,
   courseController.postCreateCourse
 );
 
