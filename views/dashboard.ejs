@@ -24,12 +24,17 @@
 
   <nav>
     <a href="/courses">View All Courses</a>
+
     <% if (user.role==='instructor' ) { %>
       <a href="/courses/create">Create a New Course</a>
+      <!-- This is the missing link -->
+      <a href="/courses/my-courses">View My Courses</a>
       <% } %>
+
         <% if (user.role==='student' ) { %>
           <a href="/enrollments/my-courses">View My Enrolled Courses</a>
           <% } %>
+
             <a href="/auth/logout">Logout</a>
   </nav>
 

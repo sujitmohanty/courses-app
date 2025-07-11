@@ -51,20 +51,20 @@ exports.getInstructorCourses = (req, res) => {
 exports.getCourseDetails = (req, res) => {
   const courseId = req.params.id;
   Course.findById(courseId, (err, course) => {
-    if (err) {
-      console.error("Error finding course by ID:", err);
-      return res.status(500).send("An error occurred.");
-    }
-    if (!course) {
+    if (err || !course) {
       return res.status(404).send("Course not found.");
     }
-
-    // Authorization check: only the course's instructor can view details
+    // Authorization check remains important
     if (course.instructor_id !== req.session.userId) {
       return res
         .status(403)
         .send("Access Denied: You are not the instructor for this course.");
     }
+    // No longer need to fetch students, just render the page
+    res.render("courses/details", {
+      title: course.title,
+      course: course,
+    });
   });
 };
 
